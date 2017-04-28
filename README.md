@@ -25,12 +25,14 @@ https://github.com/gnikolovski/druact_api/releases
 Since this module is not published on drupal.org or on packagist.org you will
 need to add the VCS repository to your composer.json file. You need to add this:
 
-"repositories": [
+```
+"repositories": [  
     {
         "type": "vcs",
-        "url":  "https://github.com/gnikolovski/druact_api"
-    }
+        "url":  "https://github.com/gnikolovski/druact_api"  
+    }  
 ]
+```
 
 Then you can run the following command to install it:
 
@@ -56,10 +58,10 @@ Extend page (admin/modules) and install Druact API.
 
 You also need to download the following required modules:
 
-Token https://www.drupal.org/project/token
-REST UI https://www.drupal.org/project/restui
-Contact message REST https://www.drupal.org/project/contact_message_rest
-Contact Storage https://www.drupal.org/project/contact_storage
+Token https://www.drupal.org/project/token  
+REST UI https://www.drupal.org/project/restui  
+Contact message REST https://www.drupal.org/project/contact_message_rest  
+Contact Storage https://www.drupal.org/project/contact_storage  
 
 ### AUTHOR
 
