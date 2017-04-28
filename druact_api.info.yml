@@ -1,0 +1,12 @@
+name: Druact API
+type: module
+description: 'Back-end API for simple decoupled website.'
+core: 8.x
+dependencies:
+  - rest
+  - serialization
+  - basic_auth
+  - restui
+  - token
+  - contact_message_rest
+  - contact_storage

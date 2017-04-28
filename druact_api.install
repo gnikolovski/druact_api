@@ -1,0 +1,90 @@
+<?php
+
+use Drupal\user\RoleInterface;
+use Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_install().
+ */
+function druact_api_install() {
+  druact_api_enable_cors();
+  druact_api_grant_permissions();
+  druact_api_create_articles();
+}
+
+/**
+ * Enable Cross-origin resource sharing (CORS).
+ */
+function druact_api_enable_cors() {
+  // Create services.yml file if not exists.
+  $services_file_path = DRUPAL_ROOT . '/sites/default/services.yml';
+  $default_services_file_path = DRUPAL_ROOT . '/sites/default/default.services.yml';
+  if (!file_exists($services_file_path)) {
+    if (file_exists($default_services_file_path)) {
+      copy($default_services_file_path, $services_file_path);
+    }
+  }
+
+  // Update services.yml file.
+  if (file_exists($services_file_path)) {
+    $services_file_data = file_get_contents($services_file_path);
+    $services_file_data = str_replace('enabled: false', 'enabled: true', $services_file_data);
+    $services_file_data = str_replace('allowedHeaders: []', "allowedHeaders: ['*']", $services_file_data);
+    $services_file_data = str_replace('allowedMethods: []', "allowedMethods: ['GET', 'POST']", $services_file_data);
+    file_put_contents($services_file_path, $services_file_data);
+  }
+}
+
+/**
+ * Grant user permissions for accessing REST endpoints.
+ */
+function druact_api_grant_permissions() {
+  $permissions = [
+    'restful post contact_message',
+    'restful post user_registration',
+  ];
+
+  user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, $permissions);
+  user_role_grant_permissions(RoleInterface::AUTHENTICATED_ID, $permissions);
+}
+
+/**
+ * Create sample articles.
+ */
+function druact_api_create_articles() {
+  $articles = [
+    [
+      'title' => 'Lorem ipsum dolor sit',
+      'body' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sodales, augue ac molestie ullamcorper, libero nunc elementum odio, at rutrum nisi est eu quam. Praesent dignissim pulvinar diam quis aliquet. Aliquam tristique gravida urna, non dictum ante rhoncus ut. Nullam nec lobortis massa, et hendrerit nisi. Pellentesque placerat ac odio ac eleifend. Proin rhoncus metus elit, eget finibus erat tristique sed. Nulla feugiat ligula feugiat egestas blandit. Maecenas luctus, nibh non commodo porta, felis eros aliquam velit, a posuere massa nibh ac dolor. Nam elementum tortor diam, vitae lacinia erat ullamcorper mattis. Sed convallis libero turpis, nec maximus libero eleifend nec. Proin ut ex consequat, imperdiet turpis et, ultricies urna. Aenean vel ultrices lacus. Mauris neque diam, ultricies vel lobortis vitae, eleifend vel metus. Nullam porta accumsan sem, tincidunt accumsan risus. In tellus dolor, pellentesque eu euismod et, tempor at mi.</p><p>Nulla ornare consequat augue, ac consequat tortor iaculis et. Ut in massa tincidunt, sagittis orci et, euismod augue. Nulla congue accumsan ligula, vel consequat sapien rhoncus non. Fusce condimentum tincidunt enim a dignissim. In aliquam sapien quis sagittis ornare. Donec ac justo tristique neque rhoncus sagittis non a libero. Nullam dictum nunc at porttitor aliquet. Morbi gravida lacinia enim et tempor. Curabitur varius dui eros, tempor bibendum lorem hendrerit sed. Morbi turpis ex, consequat porta sollicitudin sed, mattis in arcu. Suspendisse non massa at elit rutrum viverra. Duis facilisis nec nulla vel dapibus. Proin leo leo, lobortis nec libero nec, cursus ornare risus. Donec aliquam ultrices mi nec sodales. Cras quam nisi, venenatis sit amet tincidunt id, aliquet vitae elit.</p>',
+    ],
+    [
+      'title' => 'Nulla blandit nisl eget',
+      'body' => '<p>Nulla blandit nisl eget blandit sodales. Ut eu ipsum aliquam, vestibulum justo ut, ultrices eros. Etiam orci turpis, tincidunt malesuada nunc a, semper consectetur lorem. Ut eget nisl aliquam, congue leo et, volutpat odio. Pellentesque ullamcorper pharetra suscipit. Proin vitae orci sit amet massa tincidunt aliquam. Ut ornare sed magna ac efficitur. Morbi efficitur nisi semper lectus vestibulum, a accumsan ligula ultricies. Proin feugiat at mauris a sollicitudin. Pellentesque eu feugiat mauris. Vivamus molestie venenatis aliquet. Sed at auctor metus. Praesent vitae viverra augue, a interdum magna. Integer ac nunc porta, posuere arcu sit amet, aliquet est.</p><p>Nunc suscipit risus tellus, vitae porttitor purus tristique et. Nullam porttitor odio leo, ac convallis magna tincidunt eu. Etiam a nibh sit amet erat interdum porttitor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce interdum ex et dui maximus molestie. Ut dictum magna ac felis eleifend pellentesque. Donec mauris nisl, accumsan at metus eu, pretium mollis nulla. Mauris molestie vitae ipsum eu imperdiet. Phasellus enim urna, blandit sagittis orci sit amet, consequat ullamcorper eros. Nunc sit amet mauris ut ante consequat fermentum non vitae nisl. Sed quis ante varius, ornare sem tempor, ultrices justo.</p>',
+    ],
+    [
+      'title' => 'Nam vulputate arcu',
+      'body' => '<p>Nam vulputate arcu non sapien rhoncus, a dignissim ex laoreet. Phasellus id massa at tellus lacinia gravida porttitor at nulla. Morbi molestie fringilla ante, sit amet ultricies urna ullamcorper quis. Aenean eu mattis nunc. Suspendisse posuere id nulla at sollicitudin. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus eget ante purus. Donec orci ligula, pharetra quis porttitor sit amet, feugiat tincidunt diam. Phasellus eget malesuada felis. Nam ut condimentum ex. Cras molestie tempor purus, quis varius risus lobortis non. Proin lacinia ante a malesuada vehicula. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin a sagittis erat.</p><p>Suspendisse vel neque risus. Nulla vel velit bibendum, ullamcorper orci at, sodales orci. Phasellus eu tempor orci. Mauris rutrum ligula vestibulum hendrerit feugiat. Nunc in risus vestibulum, euismod nisi mattis, vulputate enim. Morbi ut varius lectus. Suspendisse ultricies ac sapien vitae viverra. Sed volutpat cursus tortor non cursus. Sed condimentum ante quis felis vestibulum placerat. Curabitur fermentum, felis eget scelerisque dapibus, tellus dolor ultricies metus, ut porta nisi arcu vitae purus. Mauris ipsum est, dictum et tempor luctus, malesuada quis nibh. Aliquam elementum sit amet nulla vel consectetur. Donec sodales volutpat blandit. Suspendisse sagittis nec nulla a euismod. Phasellus urna purus, ultricies et ligula sit amet, efficitur vestibulum eros. Fusce in hendrerit risus.</p>',
+    ],
+    [
+      'title' => 'Quisque condimentum',
+      'body' => '<p>Quisque condimentum, nibh eu malesuada pretium, massa libero feugiat orci, sagittis sollicitudin diam purus vestibulum odio. Maecenas dignissim posuere diam eu lobortis. Phasellus posuere ante sit amet lacus rhoncus, at tincidunt erat semper. Sed pellentesque orci purus, a sodales nibh molestie ut. Duis convallis turpis sem, ac scelerisque magna ullamcorper in. Maecenas ut ligula non felis rutrum sagittis in sed odio. Suspendisse maximus vestibulum enim non semper. Proin a commodo enim. Mauris sed massa vitae lectus placerat viverra pellentesque vitae elit. Phasellus at tellus dictum, mattis dui sed, condimentum tellus. Nulla cursus ut urna vitae molestie. Phasellus pharetra pretium dolor, et placerat arcu tempor sed. Aliquam ut est elit. Quisque malesuada enim vitae neque pharetra, in finibus velit ornare.</p><p>Vestibulum vitae ultrices odio. Curabitur non felis eget elit scelerisque consectetur. Donec et cursus orci. Nulla tincidunt erat ac sapien rutrum accumsan. Vestibulum auctor, quam efficitur hendrerit hendrerit, libero urna lobortis quam, id accumsan turpis dui in metus. Donec condimentum quam sed odio vehicula aliquet. Ut molestie ipsum et tellus commodo egestas. Pellentesque commodo ut leo quis faucibus. Duis luctus aliquet dolor sit amet posuere. Pellentesque in elementum leo. Cras pretium rhoncus orci, a mollis mi dignissim quis. Curabitur augue nunc, finibus id sapien ut, dapibus lacinia justo. Curabitur sed venenatis turpis, at interdum lacus. Maecenas a pretium mauris.</p>',
+    ],
+    [
+      'title' => 'Donec mauris nulla',
+      'body' => '<p>Donec mauris nulla, egestas quis interdum ut, ultrices vitae ipsum. Sed aliquet vestibulum laoreet. Proin placerat imperdiet magna, sed commodo est sagittis in. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vivamus ut lorem est. Donec nec consectetur leo. Nam fermentum metus nec libero vulputate, non hendrerit lorem fringilla. Nullam maximus est ut libero ultricies varius. Suspendisse potenti. In quis euismod dolor. Aliquam sed turpis sem. Quisque pellentesque ex leo, at dictum dui ultricies a.</p><p>Morbi sodales augue non tellus luctus luctus. Nullam mauris ex, varius nec venenatis quis, pellentesque eu tellus. Aliquam erat volutpat. Nunc pretium nibh leo, ut rhoncus tortor consequat vitae. Morbi eget ante id est semper lobortis in vitae enim. Ut imperdiet, nisi sit amet congue efficitur, est ipsum imperdiet metus, vel elementum tellus est ut nisi. Nulla mattis elementum augue et tincidunt. Nulla eu dignissim dolor. Mauris ac sapien in mi sodales interdum non sit amet massa. Sed venenatis libero ac fringilla euismod. Nulla volutpat lacus sit amet lacus commodo convallis. Curabitur eu euismod sem. Pellentesque scelerisque tincidunt ex, in ultricies sem laoreet non. Aliquam sagittis lorem ac magna vulputate molestie. Phasellus a viverra urna. Suspendisse id libero in eros facilisis tincidunt et eu ligula.</p>',
+    ],
+  ];
+
+  foreach ($articles as $article) {
+    $node = Node::create([
+      'type' => 'article',
+      'title' => $article['title'],
+      'uid' => '1',
+      'status' => 1,
+      'promoted' => 1,
+    ]);
+    $node->body->value = $article['body'];
+    $node->body->format = 'basic_html';
+    $node->save();
+  }
+}

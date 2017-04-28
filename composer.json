@@ -1,0 +1,32 @@
+{
+    "name": "gnikolovski/druact_api",
+    "description": "Back-end API for simple decoupled website.",
+    "type": "drupal-module",
+    "homepage": "http://druact.gorannikolovski.com",
+    "authors": [
+        {
+            "name": "Goran Nikolovski",
+            "email": "nikolovski84@gmail.com",
+            "homepage": "http://gorannikolovski.com",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        }
+    ],
+    "require": {
+        "drupal/restui": "^1.14",
+        "drupal/token": "^1.0@rc",
+        "drupal/contact_message_rest": "^1.0@alpha",
+        "drupal/contact_storage": "^1.0@beta"
+    },
+    "support": {
+        "issues": "https://github.com/gnikolovski/druact_api/issues",
+        "email": "nikolovski84@gmail.com"
+    },
+    "license": "GPL-2.0+",
+    "minimum-stability": "dev"
+}
