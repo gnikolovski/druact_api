@@ -10,6 +10,7 @@ function druact_api_install() {
   druact_api_enable_cors();
   druact_api_grant_permissions();
   druact_api_create_articles();
+  druact_api_update_account_settings();
 }
 
 /**
@@ -87,4 +88,19 @@ function druact_api_create_articles() {
     $node->body->format = 'basic_html';
     $node->save();
   }
+}
+
+/**
+ * Update account settings.
+ *
+ * Enable visitors to create accounts and disable email verification.
+ */
+function druact_api_update_account_settings() {
+  $config_factory = \Drupal::configFactory();
+
+  $config_factory
+    ->getEditable('user.settings')
+    ->set('register', 'visitors')
+    ->set('verify_mail', FALSE)
+    ->save();
 }
