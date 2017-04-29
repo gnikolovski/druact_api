@@ -29,7 +29,7 @@ function druact_api_enable_cors() {
   if (file_exists($services_file_path)) {
     $services_file_data = file_get_contents($services_file_path);
     $services_file_data = str_replace('enabled: false', 'enabled: true', $services_file_data);
-    $services_file_data = str_replace('allowedHeaders: []', "allowedHeaders: ['*']", $services_file_data);
+    $services_file_data = str_replace('allowedHeaders: []', "allowedHeaders: ['Content-type', 'Authorization']", $services_file_data);
     $services_file_data = str_replace('allowedMethods: []', "allowedMethods: ['GET', 'POST']", $services_file_data);
     file_put_contents($services_file_path, $services_file_data);
   }
