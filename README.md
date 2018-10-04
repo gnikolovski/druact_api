@@ -67,7 +67,7 @@ Contact Storage https://www.drupal.org/project/contact_storage
 
 Goran Nikolovski  
 Website: (http://www.gorannikolovski.com)  
-Drupal: (https://www.drupal.org/user/3451979)  
+Drupal: (https://www.drupal.org/u/gnikolovski)  
 Email: nikolovski84@gmail.com  
 
 Company: Studio Present, Subotica, Serbia  
