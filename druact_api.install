@@ -1,7 +1,12 @@
 <?php
 
-use Drupal\user\RoleInterface;
+/**
+ * @file
+ * Contains install and update functions for Druact API.
+ */
+
 use Drupal\node\Entity\Node;
+use Drupal\user\RoleInterface;
 
 /**
  * Implements hook_install().
@@ -14,7 +19,7 @@ function druact_api_install() {
 }
 
 /**
- * Enable Cross-origin resource sharing (CORS).
+ * Enables Cross-origin resource sharing (CORS).
  */
 function druact_api_enable_cors() {
   // Create services.yml file if not exists.
@@ -37,7 +42,7 @@ function druact_api_enable_cors() {
 }
 
 /**
- * Grant user permissions for accessing REST endpoints.
+ * Grants user permissions for accessing REST endpoints.
  */
 function druact_api_grant_permissions() {
   $permissions = [
@@ -50,7 +55,7 @@ function druact_api_grant_permissions() {
 }
 
 /**
- * Create sample articles.
+ * Creates sample articles.
  */
 function druact_api_create_articles() {
   $articles = [
@@ -91,7 +96,7 @@ function druact_api_create_articles() {
 }
 
 /**
- * Update account settings.
+ * Updates account settings.
  *
  * Enable visitors to create accounts and disable email verification.
  */
